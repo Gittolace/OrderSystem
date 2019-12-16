@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>订单管理员</title>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vector.js}"></script>
+
+</head>
+<body>
+
+<div id="container">
+	<div id="output">
+		<div th:object="${u}">
+   			<p th:text="'用户编号：' + *{id}+'&nbsp;&nbsp;用户姓名：' + *{username}+'&nbsp;&nbsp;用户职位：' + *{pos}"/>
+		</div>
+		<div class="containerT">
+			<h1>新建订单</h1>
+			<form class="form" id="entry_form" action="/user/newResult" method="post">
+				<div th:object="${u}">
+					<input type="hidden" name="newMan" th:value=*{username}>
+					<input type="hidden" name="username" th:value=*{username}>
+					<input type="hidden" name="pos" th:value=*{pos}>
+				</div>
+				<input type="hidden" name="status" value="未审核">
+				<input name="proType" type="text" required placeholder="产品类型" id="entry_name">
+				<input name="material" type="text" required placeholder="材料" id="entry_name">
+				<input name="amount" type="text" required placeholder="数量" id="entry_name">
+				<input name="attention" type="text" required placeholder="注意事项" id="entry_name">
+				<input name="qualify" type="text" required placeholder="合格要求" id="entry_name">
+				<input name="date" type="text" required placeholder="交货日期" id="entry_name">
+				<input name="ifTry" type="text" required placeholder="是否试样" id="entry_name">
+				<input type="submit" value="创建订单" id="entry_btn">
+				<div id="prompt" class="prompt"></div>
+			</form>
+			<form class="form" id="entry_form" action="/user/login" method="post">
+				<div th:object="${u}">
+					<input type="hidden" name="username" th:value=*{username}>
+					<input type="hidden" name="password" th:value=*{password}>
+				</div>
+				<input type="submit" value="返回" id="entry_btn">
+				<div id="prompt" class="prompt"></div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        Victor("container", "output");   //登录背景函数
+        $("#entry_name").focus();
+        $(document).keydown(function(event){
+            if(event.keyCode==13){
+                $("#entry_btn").click();
+            }
+        });
+    });
+</script>
+<div style="text-align:center;">
+
+</div>
+</body>
+</html>

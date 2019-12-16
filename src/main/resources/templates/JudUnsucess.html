@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>审核员界面</title>
+
+<link rel="stylesheet" type="text/css" th:href="@{/css/jud.css}">
+
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/vector.js}"></script>
+
+</head>
+<body>
+<div id="container">
+	<div id="output">
+		<div th:object="${u}">
+   			<p th:text="'用户编号：' + *{id}+'&nbsp;&nbsp;用户姓名：' + *{username}+'&nbsp;&nbsp;用户职位：' + *{pos}"/>
+		</div>
+		<div class="containerT">
+		<div>
+    <table width="100%" border="1" bordercolor="#000000"> 
+        <tr bordercolor="#FFFFFF"><td>No.</td><td>订单编号</td><td>订单状态</td><td>创建人</td><td>产品类型</td><td>材料</td><td>数量</td><td>注意事项</td><td>合格要求</td><td>交货日期</td><td>是否试样</td><td>审核</td></tr>
+        <tr bordercolor="#FFFFFF" th:each="order,memberStat:${o}">
+            <td th:text="${memberStat.index + 1}"/>
+            <td th:text="${order.no}"/>
+            <td th:text="${order.status}"/>
+            <td th:text="${order.newMan}"/>
+            <td th:text="${order.proType}"/>
+            <td th:text="${order.material}"/>
+            <td th:text="${order.amount}"/>
+            <td th:text="${order.attention}"/>
+            <td th:text="${order.qualify}"/>
+            <td th:text="${order.date}"/>
+            <td th:text="${order.ifTry}"/>
+            <td>
+            <form class="form" id="entry_form" action="/user/judge" method="post">
+            	<div th:object="${u}">
+					<input type="hidden" name="username" th:value=*{username}>
+					<input type="hidden" name="pos" th:value=*{pos}>
+					<input type="hidden" name="judMan" th:value=*{username}>
+				</div>
+				<input type="hidden" name="no" th:value=${order.no}>
+				<input name="reason" type="text" required placeholder="原因" id="entry_name">
+				<select name="status" id="status">
+                	<option value="通过审核" selected="selected">通过</option>
+                	<option value="不通过审核">不通过</option>
+     			</select>
+				<input type="submit" value="审核" id="entry_btn">
+			</form>
+            </td>
+        </tr>
+    </table>
+
+		</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        Victor("container", "output");   //登录背景函数
+        $("#entry_name").focus();
+        $(document).keydown(function(event){
+            if(event.keyCode==13){
+                $("#entry_btn").click();
+            }
+        });
+    });
+</script>
+<div style="text-align:center;">
+
+</div>
+</body>
+</html>
